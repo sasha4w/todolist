@@ -1,14 +1,17 @@
+import { todoStore } from "../todo-store.js";
 class TodoButton extends HTMLElement{
     connectedCallback() {
+    this.attachShadow({ mode: "open" });
     this.render();
 }
 disconnectedCallback() {
 
 }
 render() {
-    this.innerHTML = /*HTML */ `
-        <h1></h1>
+    this.shadowRoot.innerHTML = /*HTML */ `
+        <button>+</button>
     `;
+    this.$button = this.shadowRoot.querySelector("button");
     
 }
 

@@ -1,5 +1,4 @@
 import { todoStore } from "../todo-store.js";
-import "./todo-list.js"
 class TodoWrapper extends HTMLElement{
     connectedCallback() {
     this.attachShadow({ mode: "open" });    
