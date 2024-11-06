@@ -1,29 +1,71 @@
 import { todoStore } from "../todo-store.js";
-class TodoWrapper extends HTMLElement{
-    connectedCallback() {
-    this.attachShadow({ mode: "open" });    
+import "./todo-button.js";
+
+class TodoTask extends HTMLElement {
+  static get observedAttributes() {
+    return ["label", "done", "id"]; // Ajouter "id" si nécessaire
+  }
+
+  connectedCallback() {
+    this.attachShadow({ mode: "open" });
+    setTimeout(() => this.render(), 0); // On attend que le shadow DOM soit prêt
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
     this.render();
-}
-disconnectedCallback() {
+  }
 
-}
-render() {
-    this.shadowRoot.innerHTML = /*HTML */ `
-        <ul><todo-list></todo-list></ul>
+  render() {
+    if (!this.shadowRoot) return;
 
-        <div id="taskCount">nombre de task</div>
-        <button id="taskComplete">completeAll</button>
-        <button id="taskClear">deleteAll</button>
+    const label = this.getAttribute("label");
+    const done = this.getAttribute("done") === "true";
+    const id = this.getAttribute("id");
+
+    this.shadowRoot.innerHTML = /* HTML */ `
+      <form>
+        <label>
+          <input type="checkbox" ${done ? "checked" : ""} />
+          <span>${label}</span>
+        </label>
+      </form>
+      <div>
+        <todo-button action="delete"></todo-button>
+        <todo-button action="edit"></todo-button>
+      </div>
     `;
-    this.$taskCount = this.shadowRoot.getElementById("taskCount");
-    this.$taskComplete = this.shadowRoot.getElementById("taskComplete");
-    this.$taskClear = this.shadowRoot.getElementById("taskClear");
 
+    this.$checkbox = this.shadowRoot.querySelector("input[type='checkbox']");
+    this.$checkbox.addEventListener("change", () => {
+      todoStore.checkTodo(id); // On toggle la tâche
+    });
+
+    // Gérer l'action du bouton "delete"
+    const deleteButton = this.shadowRoot.querySelector(
+      "todo-button[action='delete']"
+    );
+    deleteButton.addEventListener("button-action", () => {
+      todoStore.deleteTodo(id); // On supprime la tâche par son ID
+    });
+
+    // Gérer l'action du bouton "edit"
+    const editButton = this.shadowRoot.querySelector(
+      "todo-button[action='edit']"
+    );
+    editButton.addEventListener("button-action", () => {
+      this.editTask(id); // On passe à l'édition de la tâche
+    });
+  }
+
+  editTask(id) {
+    // Logique pour éditer une tâche, tu peux ici modifier l'interface
+    // et afficher un champ de saisie pour l'édition.
+    const label = this.getAttribute("label");
+    const newLabel = prompt("Modifier la tâche", label); // On demande à l'utilisateur de modifier
+    if (newLabel !== null) {
+      todoStore.editTodo(id, newLabel); // On envoie la nouvelle valeur au store
+    }
+  }
 }
 
-attributeChangedCallback(name, oldValue, newValue) {
-}
-}
-customElements.define("todo-wrapper", TodoWrapper);
-
-
+customElements.define("todo-task", TodoTask);
