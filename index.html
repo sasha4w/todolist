@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOOFY EXO WEB COMPONENT</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <script defer src="./src/current-time.js"></script>
+    <script defer src="./src/screen-size.js"></script>
+    <script defer src="./src/custom-details.js"></script>
+
+</head>
+<body>
+    <screen-size unit="rem"></screen-size>
+    <section>
+        <current-time></current-time>
+        <current-time format="utc"></current-time>
+        <template id="custom-details">
+            <details>
+                <summary><slot name="summary"></slot></summary>
+                <slot name="content"></slot>
+            </details>
+        </template>
+        <custom-details>
+            <span slot="summary">Les 3 technologies des Web Components</span>
+            <ul slot="content">
+                <li>Shadow DOM</li>
+                <li>Custom Elements</li>
+                <li>HTML Templates</li>
+            </ul>
+        </custom-details>
+    </section>
+</body>
+</html>
