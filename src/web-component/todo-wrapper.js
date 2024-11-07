@@ -6,7 +6,7 @@ class TodoWrapper extends HTMLElement {
     this.render();
 
     // Met à jour l'affichage des tâches restantes chaque fois qu'il y a un changement dans TodoStore
-    todoStore.onChange(() => {
+    todoStore.subscribe(() => {
       this.render();
     });
   }
@@ -16,14 +16,35 @@ class TodoWrapper extends HTMLElement {
 
     // Rendu du template HTML avec le nombre de tâches restantes
     this.shadowRoot.innerHTML = /* HTML */ `
+      <style>
+        .button-list {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 2rem;
+          margin-top: 2rem;
+        }
+        .button-list button {
+          width: 100%;
+        }
+        #taskCount {
+          text-align: center;
+        }
+      </style>
       <todo-list></todo-list>
       <div id="taskCount">Tâches restantes : ${remainingTodos}</div>
-      <button id="taskComplete" ${remainingTodos === 0 ? "disabled" : ""}>
-        Compléter tout
-      </button>
-      <button id="taskClear" ${!todoStore.hasCheckedTodos() ? "disabled" : ""}>
-        Supprimer les tâches cochées
-      </button>
+      <div class="button-list">
+        <button id="taskComplete" ${remainingTodos === 0 ? "disabled" : ""}>
+          Compléter tout
+        </button>
+        <button
+          id="taskClear"
+          ${!todoStore.hasCheckedTodos() ? "disabled" : ""}
+        >
+          Supprimer les tâches cochées
+        </button>
+      </div>
     `;
 
     // Références des éléments DOM dans le shadowRoot

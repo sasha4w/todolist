@@ -9,6 +9,11 @@ class TodoApp extends HTMLElement {
   disconnectedCallback() {}
   render() {
     this.shadowRoot.innerHTML = /* HTML */ `
+      <style>
+        h1 {
+          text-align: center;
+        }
+      </style>
       <h1>Ma Todo liste</h1>
       <todo-form></todo-form>
       <todo-wrapper></todo-wrapper>

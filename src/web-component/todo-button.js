@@ -26,7 +26,7 @@ class TodoButton extends HTMLElement {
     let color = "green"; // Couleur par défaut pour "ajout"
 
     if (action === "edit") {
-      label = "m";
+      label = "&";
       color = "blue";
     } else if (action === "delete") {
       label = "-";
@@ -37,9 +37,18 @@ class TodoButton extends HTMLElement {
     if (this.shadowRoot) {
       this.shadowRoot.innerHTML = /* HTML */ `
         <style>
+          button:hover {
+            opacity: 0.7;
+          }
           button {
             color: ${color};
             font-size: 1.5em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            padding: 0;
+            margin: 0;
             cursor: pointer;
           }
         </style>

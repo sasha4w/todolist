@@ -11,6 +11,14 @@ class TodoForm extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = /* HTML */ `
+      <style>
+        input {
+          padding: 0.5rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      </style>
       <form>
         <label> Tâche : </label>
         <input name="label" required />
